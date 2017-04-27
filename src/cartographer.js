@@ -1,7 +1,7 @@
 var Cartographer = (function () {
 
     var editor = {};
-    var canvas = document.createElement('canvas');
+    var canvas = document.createElement("canvas");
     var ctx = canvas.getContext("2d");
     var handleRadius, img, canvas, map, areaIndex, drag, mode;
 
@@ -9,7 +9,7 @@ var Cartographer = (function () {
         imageId: "",
         handleRadius: 4,
         mapId: ""
-    }
+    };
 
     editor.launch = function () {
         init();
@@ -50,7 +50,7 @@ var Cartographer = (function () {
 
     editor.stop = function () {
         init();
-    }
+    };
 
     editor.newShape = function (type) {
         mode = type;
@@ -58,7 +58,7 @@ var Cartographer = (function () {
             areaIndex = map.length;
         }
         renderMap();
-    }
+    };
 
     editor.deleteShape = function () {
         mode = "none";
@@ -67,13 +67,13 @@ var Cartographer = (function () {
         }
         areaIndex = Math.max(map.length - 1, 0);
         renderMap();
-    }
+    };
 
     function isRedundantPoint(x, y) {
-        for (let n = -1; n <= 1; n++) {
-            for (let m = -1; m <= 1; m++) {
+        for (var n = -1; n <= 1; n++) {
+            for (var m = -1; m <= 1; m++) {
                 if (!ctx.isPointInPath(x + n, y + m, "evenodd")) {
-                    return false
+                    return false;
                 }
             }
         }
@@ -128,7 +128,7 @@ var Cartographer = (function () {
     }
 
     function mouseWithinRadius(shape, mouseX, mouseY, callback) {
-        for (let i = shape.coords.length - 1; i >= 0; i--) {
+        for (var i = shape.coords.length - 1; i >= 0; i--) {
             if (euclidianDist(shape.coords[i].x, shape.coords[i].y, mouseX, mouseY) <= handleRadius + 1) {
                 return callback(i);
             }
@@ -138,7 +138,7 @@ var Cartographer = (function () {
     function renderMap() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < map.length; i++) {
+        for (var i = 0; i < map.length; i++) {
             renderSelection(map[i], (i == areaIndex) ? 1 : 0.5);
         }
     }
@@ -164,7 +164,7 @@ var Cartographer = (function () {
             if (areaIndex >= map.length) {
                 areaIndex = Math.max(map.length - 1, 0);
             }
-            for (let i = map.length - 1; i >= 0; i--) {
+            for (var i = map.length - 1; i >= 0; i--) {
                 traceSelection(map[i]);
                 if (isRedundantPoint(x, y)) {
                     areaIndex = i;
@@ -231,8 +231,11 @@ var Cartographer = (function () {
         }
     }
 
-    function renderSelection(shape, alpha = 1) {
+    function renderSelection(shape, alpha) {
         ctx.save();
+        if (!alpha) {
+            alpha = 1;
+        }
         ctx.globalAlpha = alpha;
         ctx.globalCompositeOperation = "luminosity";
         ctx.fillStyle = "rgba(255,255,255,0.3)";
@@ -264,11 +267,11 @@ var Cartographer = (function () {
         mode = "none";
         drag = null;
         areas = el.getElementsByTagName("area");
-        for (let i = 0; i < areas.length; i++) {
+        for (var i = 0; i < areas.length; i++) {
             shape = {coords: []};
             shape.shape = areas[i].shape;
             var coords = areas[i].coords.split(",");
-            for (let c = 0; c < coords.length; c+=2) {
+            for (var c = 0; c < coords.length; c+=2) {
                 shape.coords.push({
                     x: coords[c],
                     y: coords[c+1]
@@ -279,17 +282,17 @@ var Cartographer = (function () {
         renderMap();
     }
 
-    editor.exportMap = function (type = "json") {
+    editor.exportMap = function (type) {
         var out = [];
         if (type == "map") {
-            for (let i = 0; i < map.length; i++) {
+            for (var i = 0; i < map.length; i++) {
                 var coords = "";
-                for (let c = 0; c < map[i].coords.length; c++) {
+                for (var c = 0; c < map[i].coords.length; c++) {
                     coords += (map[i].coords[c].x + "," + map[i].coords[c].y + ((c < map[i].coords.length - 1) ? "," : ""));
                 }
                 out.push("<area shape='" + map[i].shape + "' coords='" + coords + "'>");
             }
-        } else if (type == "json") {
+        } else if (type == "json" || !type) {
             out = map;
         }
         return out;
