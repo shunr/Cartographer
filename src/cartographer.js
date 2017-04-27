@@ -1,4 +1,4 @@
-var Cartographer = (function() {
+var Cartographer = (function () {
 
     var editor = {};
     var canvas = document.createElement('canvas');
@@ -11,7 +11,7 @@ var Cartographer = (function() {
         mapId: ""
     }
 
-    editor.launch = function() {
+    editor.launch = function () {
         init();
         var options = {};
         if (arguments[0] && typeof arguments[0] === "object") {
@@ -25,10 +25,11 @@ var Cartographer = (function() {
         ctx.drawImage(img, 0, 0);
         img.style.display = "none";
         insertAfter(img, canvas);
+        editor.importMap(options.mapId);
         document.addEventListener("mouseup", mouseUp);
         canvas.addEventListener("mousedown", mouseDown);
         canvas.addEventListener("mousemove", mouseMove);
-        canvas.addEventListener("contextmenu", function(e) {
+        canvas.addEventListener("contextmenu", function (e) {
             e.preventDefault();
         }, false);
     };
@@ -47,11 +48,11 @@ var Cartographer = (function() {
         canvas.removeEventListener("mousemove", mouseMove);
     }
 
-    editor.stop = function() {
+    editor.stop = function () {
         init();
     }
 
-    editor.newShape = function(type) {
+    editor.newShape = function (type) {
         mode = type;
         if (areaIndex < map.length) {
             areaIndex = map.length;
@@ -59,7 +60,7 @@ var Cartographer = (function() {
         renderMap();
     }
 
-    editor.deleteShape = function() {
+    editor.deleteShape = function () {
         mode = "none";
         if (areaIndex < map.length) {
             map.splice(areaIndex, 1);
@@ -89,9 +90,9 @@ var Cartographer = (function() {
                         x: x,
                         y: y
                     }, {
-                        x: x,
-                        y: y
-                    }]
+                            x: x,
+                            y: y
+                        }]
                 }) - 1];
                 drag = shape.coords[1];
             }
@@ -119,7 +120,7 @@ var Cartographer = (function() {
                 }
             }
         } else if (e.button == 2 && shape && shape.coords.length > 3) {
-            mouseWithinRadius(shape, x, y, function(i) {
+            mouseWithinRadius(shape, x, y, function (i) {
                 shape.coords.splice(i, 1);
             });
         }
@@ -142,10 +143,6 @@ var Cartographer = (function() {
         }
     }
 
-    function loadMap() {
-
-    }
-
     function mouseDown(e) {
         var x = e.offsetX;
         var y = e.offsetY;
@@ -157,7 +154,7 @@ var Cartographer = (function() {
         }
 
         if (map[areaIndex]) {
-            mouseWithinRadius(map[areaIndex], x, y, function(i) {
+            mouseWithinRadius(map[areaIndex], x, y, function (i) {
                 drag = map[areaIndex].coords[i];
             });
         }
@@ -173,7 +170,7 @@ var Cartographer = (function() {
                     areaIndex = i;
                     break;
                 } else {
-                    mouseWithinRadius(map[i], x, y, function() {
+                    mouseWithinRadius(map[i], x, y, function () {
                         areaIndex = i;
                     });
                 }
@@ -191,7 +188,7 @@ var Cartographer = (function() {
         var y = e.offsetY;
         canvas.style.cursor = "default";
         if (map.length > areaIndex) {
-            mouseWithinRadius(map[areaIndex], x, y, function(i) {
+            mouseWithinRadius(map[areaIndex], x, y, function (i) {
                 canvas.style.cursor = "all-scroll";
             });
             if (drag) {
@@ -257,7 +254,32 @@ var Cartographer = (function() {
         ctx.restore();
     }
 
-    editor.exportMap = function(type = "json") {
+    editor.importMap = function (mapId) {
+        el = document.getElementById(mapId);
+        if (!el) {
+            return;
+        }
+        map = [];
+        areaIndex = 0;
+        mode = "none";
+        drag = null;
+        areas = el.getElementsByTagName("area");
+        for (let i = 0; i < areas.length; i++) {
+            shape = {coords: []};
+            shape.shape = areas[i].shape;
+            var coords = areas[i].coords.split(",");
+            for (let c = 0; c < coords.length; c+=2) {
+                shape.coords.push({
+                    x: coords[c],
+                    y: coords[c+1]
+                });
+            }
+            map.push(shape);
+        }
+        renderMap();
+    }
+
+    editor.exportMap = function (type = "json") {
         var out = [];
         if (type == "map") {
             for (let i = 0; i < map.length; i++) {
@@ -278,7 +300,7 @@ var Cartographer = (function() {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
     if (!Array.prototype.last) {
-        Array.prototype.last = function() {
+        Array.prototype.last = function () {
             return this[this.length - 1];
         };
     }
@@ -300,4 +322,4 @@ var Cartographer = (function() {
 
     return editor;
 
-}());
+} ());

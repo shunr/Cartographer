@@ -7,7 +7,13 @@
 
 <body>
 
-    <img id="image" src="test.jpg"><br/>
+    <img id="image" src="test.jpg">
+    <map name="map" id="testmap">
+        <area shape='rect' coords='470,274,645,491'>
+        <area shape='circle' coords='989,309,852,229'>
+        <area shape='poly' coords='189,137,200,71,248,162,388,189,232,207,168,291,192,189,78,158'>
+    </map>
+    <br/>
     <button onclick="rect()">Create rect</button>
     <button onclick="circle()">Create circle</button>
     <button onclick="poly()">Create poly</button>
@@ -16,9 +22,11 @@
     <button onclick="exportAsMap()">Export map</button>
     <button onclick="restart()">Restart</button>
     <button onclick="stop()">Stop</button>
+    <button onclick="importMap()">Load existing map</button>
     <script>
         var config = {
-            imageId: "image"
+            imageId: "image",
+            mapId: "",
         };
         // Initialize Cartographer with given configuration
         window.onload = function() {
@@ -53,6 +61,12 @@
         //Return array of HTML map objects of shapes
         function exportAsMap() {
             console.log(Cartographer.exportMap("map"));
+        }
+
+        
+        //Import and edit existing map based on id
+        function importMap() {
+            Cartographer.importMap("testmap");
         }
 
         function stop() {
