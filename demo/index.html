@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="../src/cartographer.js"></script>
+</head>
+
+<body>
+
+    <img id="image" src="test.jpg"><br/>
+    <button onclick="rect()">Create rect</button>
+    <button onclick="circle()">Create circle</button>
+    <button onclick="poly()">Create poly</button>
+    <button onclick="del()">Delete Shape</button>
+    <button onclick="exportAsJSON()">Export json</button>
+    <button onclick="exportAsMap()">Export map</button>
+    <button onclick="restart()">Restart</button>
+    <button onclick="stop()">Stop</button>
+    <script>
+        var config = {
+            imageId: "image"
+        };
+        // Initialize Cartographer with given configuration
+        window.onload = function() {
+            Cartographer.launch(config);
+        };      
+
+        //Add new rectangle, shift + click to drag
+        function rect() {
+            Cartographer.newShape("rect");
+        }
+
+        //Add new polygon map. Shift+click to add/remove vertices
+        function poly() {  
+            Cartographer.newShape("poly");
+        }
+
+        //Add new circle map, shift + click to drag
+        function circle() {     
+            Cartographer.newShape("circle");
+        }
+
+        //Delete highlighted shape
+        function del() {
+            Cartographer.deleteShape();
+        }
+
+        //Return JSON object of all created shapes
+        function exportAsJSON() {
+            console.log(Cartographer.exportMap("json"));
+        }
+
+        //Return array of HTML map objects of shapes
+        function exportAsMap() {
+            console.log(Cartographer.exportMap("map"));
+        }
+
+        function stop() {
+            Cartographer.stop();
+        }
+
+        function restart() {
+            Cartographer.launch(config);
+        }
+
+    </script>
+</body>
+
+</html>

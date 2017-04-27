@@ -1,0 +1,27 @@
+{
+  "name": "cartographer",
+  "version": "1.0.0",
+  "description": "Image map selection, creation and editing utility",
+  "main": "dist/cartographer.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shunr/cartographer.git"
+  },
+  "keywords": [
+    "image",
+    "imagemap",
+    "map",
+    "area",
+    "edit",
+    "polygon",
+    "cartographer",
+    "html",
+    "javascript"
+  ],
+  "author": "Shun Yu Rao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shunr/cartographer/issues"
+  },
+  "homepage": "https://github.com/shunr/cartographer#readme"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "cartographer",
+  "homepage": "https://github.com/indeed/cartographer",
+  "authors": [
+    "Shun Yu Rao"
+  ],
+  "description": "Image map selection, creation and editing utility",
+  "main": "dist/cartographer.js",
+  "keywords": [
+    "image",
+    "imagemap",
+    "map",
+    "area",
+    "edit",
+    "polygon",
+    "cartographer",
+    "html",
+    "javascript"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
